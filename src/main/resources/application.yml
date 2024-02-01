@@ -1,0 +1,40 @@
+
+server:
+  address: 0.0.0.0
+  port: 8080
+
+
+
+logging.level:
+  root: info
+  org.springframework: debug
+
+database: h2
+
+spring:
+  sql:
+    init:
+#      schema-locations=classpath*:db/${database}/schema.sql
+      data-locations=classpath*:db/${database}/data.sql
+
+  datasource:
+    driverClassName: org.h2.Driver
+#    url: jdbc:h2:file:M:/user.ivan/edmProjectSpring/lyceum/src/dataBase/lyceum_DB
+    url: jdbc:h2:file:C:/data/dbForEDMProjectOnDiskM/lyceum_DB
+
+    username: sa
+    password:
+
+#   JPA
+  jpa:
+    hibernate.ddl-auto: create-drop
+#    hibernate.ddl-auto: update
+    open-in-view: false
+
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  servlet:
+    multipart:
+      max-file-size: -1 # need to be about 50MB
+      max-request-size: -1 # need to be about 50MB
