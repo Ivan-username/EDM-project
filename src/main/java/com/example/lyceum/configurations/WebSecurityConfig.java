@@ -33,6 +33,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/registration").permitAll()
                         .requestMatchers("/project/lyceum-edm/guest-page/**").hasAnyRole(String.valueOf(Role.USER), String.valueOf(Role.ADMIN)) // то что можно
                         .anyRequest().authenticated() // то что незя :)
                 )
