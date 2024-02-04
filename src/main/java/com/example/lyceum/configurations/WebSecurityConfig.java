@@ -3,6 +3,7 @@ package com.example.lyceum.configurations;
 
 import com.example.lyceum.models.enums.Role;
 import com.example.lyceum.services.UserService;
+import com.example.lyceum.services.domain.AuthUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,10 +19,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
 //    @Autowired
-    private final UserService userService;
+    private final AuthUserService authUserService;
 
-    public WebSecurityConfig(UserService userService) {
-        this.userService = userService;
+    public WebSecurityConfig(AuthUserService authUserService) {
+        this.authUserService = authUserService;
     }
 
     public PasswordEncoder customPasswordEncoder() {
@@ -49,7 +50,7 @@ public class WebSecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userService);
+        authenticationProvider.setUserDetailsService(authUserService);
         authenticationProvider.setPasswordEncoder(customPasswordEncoder());
         return authenticationProvider;
     }

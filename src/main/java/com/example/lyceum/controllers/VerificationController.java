@@ -2,8 +2,9 @@ package com.example.lyceum.controllers;
 
 
 import com.example.lyceum.exceptions.UserAlreadyExistsException;
+import com.example.lyceum.models.domain.AuthUser;
 import com.example.lyceum.models.dto.UserDto;
-import com.example.lyceum.services.UserService;
+import com.example.lyceum.services.domain.AuthUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class VerificationController {
 
-    private final UserService userService;
+    private final AuthUserService authUserService;
 
     @GetMapping("/login")
     public String login() {
@@ -31,13 +32,13 @@ public class VerificationController {
     @PostMapping("/registration")
     public String registrationUser(UserDto userDto, Model model) {
         try {
-            userService.createUser(userDto);
+            authUserService.createUser(userDto);
         } catch (UserAlreadyExistsException ex) {
             model.addAttribute("param", true);
             log.error(ex.getMessage());
             return "redirect:/registration";
         } catch (Exception ex){
-            log.error("Unexpected Exception", ex);
+            log.error("Unexpected Exception while user creating: ", ex);
         }
         return login();
     }
