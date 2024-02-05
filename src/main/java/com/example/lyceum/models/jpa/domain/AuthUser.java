@@ -1,8 +1,7 @@
-package com.example.lyceum.models.domain;
+package com.example.lyceum.models.jpa.domain;
 
 
 import com.example.lyceum.models.enums.Role;
-import com.example.lyceum.models.jpa.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,27 +14,27 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "auth_users")
+@Table(name = "AUTH_USERS")
 public class AuthUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "EMAIL", unique = true)
     private String email;
 
-    @Column(name = "password", length = 1000)
+    @Column(name = "PASSWORD", length = 1000)
     private String password;
 
-    @Column(name = "active")
+    @Column(name = "ACTIVE")
     private Boolean active;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id")
+            name = "USER_ROLE",
+            joinColumns = @JoinColumn(name = "USER_ID")
     )
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
@@ -73,6 +72,6 @@ public class AuthUser implements UserDetails {
     }
 
     protected boolean canEqual(final Object other) {
-        return other instanceof User;
+        return other instanceof AuthUser;
     }
 }

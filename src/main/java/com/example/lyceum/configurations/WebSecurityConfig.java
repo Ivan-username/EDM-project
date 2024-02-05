@@ -2,7 +2,6 @@ package com.example.lyceum.configurations;
 
 
 import com.example.lyceum.models.enums.Role;
-import com.example.lyceum.services.UserService;
 import com.example.lyceum.services.domain.AuthUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

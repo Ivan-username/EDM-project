@@ -2,11 +2,11 @@ package com.example.lyceum.services.domain;
 
 import com.example.lyceum.configurations.CustomPasswordEncoder;
 import com.example.lyceum.exceptions.UserAlreadyExistsException;
-import com.example.lyceum.models.domain.AuthUser;
 import com.example.lyceum.models.dto.UserDto;
 import com.example.lyceum.models.enums.Role;
-import com.example.lyceum.repositories.UserRepository;
+import com.example.lyceum.models.jpa.domain.AuthUser;
 import com.example.lyceum.repositories.domain.AuthUserRepository;
+import com.example.lyceum.services.body.UserService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +26,14 @@ public class AuthUserService implements UserDetailsService {
 
     private final AuthUserRepository authUserRepository;
     private final CustomPasswordEncoder customPasswordEncoder;
+    private final UserService userService;
 
     @Autowired
     public AuthUserService(AuthUserRepository authUserRepository,
-                       @Lazy CustomPasswordEncoder customPasswordEncoder) {
+                           @Lazy CustomPasswordEncoder customPasswordEncoder, UserService userService) {
         this.authUserRepository = authUserRepository;
         this.customPasswordEncoder = customPasswordEncoder;
+        this.userService = userService;
     }
 
     @Transactional
@@ -43,7 +45,7 @@ public class AuthUserService implements UserDetailsService {
     }
 
     @Transactional
-    public void createUser(UserDto userDto) {
+    public void createAuthUser(UserDto userDto) {
         AuthUser authUser = new AuthUser();
         authUser.setEmail(userDto.getEmail());
         authUser.setPassword(customPasswordEncoder.encode(userDto.getPassword()));
@@ -57,7 +59,14 @@ public class AuthUserService implements UserDetailsService {
         } catch (DataIntegrityViolationException ex) {
             throw new UserAlreadyExistsException("User with EMAIL: " + userDto.getEmail() +" already exists", ex);
         }
+        log.warn("AuthUser with EMAIL: {} saved successfully", authUser.getEmail());
 
-        log.warn("User with EMAIL: {} saved successfully", authUser.getEmail());
+        userService.createProfUser(authUser);
+
+    }
+
+    @Transactional
+    public AuthUser getAuthUserById(Long id){
+        return authUserRepository.findAuthUserById(id);
     }
 }

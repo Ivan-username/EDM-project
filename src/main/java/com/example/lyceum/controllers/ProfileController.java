@@ -1,10 +1,7 @@
 package com.example.lyceum.controllers;
 
 
-import com.example.lyceum.models.domain.AuthUser;
-import com.example.lyceum.models.jpa.User;
-import lombok.Data;
-import lombok.Getter;
+import com.example.lyceum.models.jpa.domain.AuthUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +18,7 @@ public class ProfileController {
 
         if (authentication == null) return "login";
 
-        AuthUser authenticationPrincipalEntity = (AuthUser) authentication.getPrincipal(); // todo нужна другая модель авторизации
+        AuthUser authenticationPrincipalEntity = (AuthUser) authentication.getPrincipal();
 
 
         return "profile";
