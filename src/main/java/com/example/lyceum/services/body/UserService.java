@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -22,5 +21,10 @@ public class UserService {
         user.setAuthUser(authUser);
         userRepository.save(user);
         log.warn("Saving user with id:{}", authUser.getId());
+    }
+
+    @Transactional
+    public User getUserById(Long id){
+        return userRepository.findUserById(id);
     }
 }

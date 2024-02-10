@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+>
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
@@ -13,11 +13,12 @@
 </form>
 <hr>
 <form
-        th:action="@{/profile/update}"
+        th:action="@{/project/lyceum-edm/profile/update}"
         method="post"
         enctype="multipart/form-data"
 >
-    <input type="file" name="file"/>
+    <input type="file" name="statement" required enctype=".pdf"/>
+    <input type="file" name="parent_personal_data" required enctype=".pdf"/>
     <input type="submit" th:value="сохранить">
 </form>
 </body>

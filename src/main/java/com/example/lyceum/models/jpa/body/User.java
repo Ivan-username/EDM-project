@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+
 @Data
 @Entity
 @Table(name = "PROF_USERS")
@@ -18,11 +19,9 @@ public class User {
     @Column(name = "DATE_OF_CREATED")
     private LocalDateTime dateOfCreated;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "AUTH_USER_ID")
     private AuthUser authUser;
-
-    //todo documents dependency
 
     @PrePersist
     private void init() {
