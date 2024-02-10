@@ -25,7 +25,7 @@ public class WebSecurityConfig {
     }
 
     public PasswordEncoder customPasswordEncoder() {
-        return new CustomPasswordEncoder();
+        return new CustomPasswordEncoderConfig();
     }
 
 

@@ -16,7 +16,7 @@ import java.util.Set;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class DBFiller {
+public class DBFillerConfig {
 
     private EntityManagerFactory entityManagerFactory;
 

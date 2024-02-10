@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class CustomPasswordEncoder implements PasswordEncoder {
+public class CustomPasswordEncoderConfig implements PasswordEncoder {
     @Override
     public String encode(CharSequence plainTextPassword) {
         return BCrypt.hashpw(plainTextPassword.toString(), BCrypt.gensalt(8));

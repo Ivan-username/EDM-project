@@ -17,8 +17,8 @@
         method="post"
         enctype="multipart/form-data"
 >
-    <input type="file" name="statement" required enctype=".pdf"/>
-    <input type="file" name="parent_personal_data" required enctype=".pdf"/>
+    <input type="file" name="statement" th:accept=".pdf" required/><br>
+    <input type="file" name="parent_personal_data" th:accept=".pdf" required/><br>
     <input type="submit" th:value="сохранить">
 </form>
 </body>

@@ -1,6 +1,6 @@
 package com.example.lyceum.services.domain;
 
-import com.example.lyceum.configurations.CustomPasswordEncoder;
+import com.example.lyceum.configurations.CustomPasswordEncoderConfig;
 import com.example.lyceum.exceptions.UserAlreadyExistsException;
 import com.example.lyceum.models.dto.UserDto;
 import com.example.lyceum.models.enums.Role;
@@ -25,14 +25,14 @@ public class AuthUserService implements UserDetailsService {
 
 
     private final AuthUserRepository authUserRepository;
-    private final CustomPasswordEncoder customPasswordEncoder;
+    private final CustomPasswordEncoderConfig customPasswordEncoderConfig;
     private final UserService userService;
 
     @Autowired
     public AuthUserService(AuthUserRepository authUserRepository,
-                           @Lazy CustomPasswordEncoder customPasswordEncoder, UserService userService) {
+                           @Lazy CustomPasswordEncoderConfig customPasswordEncoderConfig, UserService userService) {
         this.authUserRepository = authUserRepository;
-        this.customPasswordEncoder = customPasswordEncoder;
+        this.customPasswordEncoderConfig = customPasswordEncoderConfig;
         this.userService = userService;
     }
 
@@ -48,7 +48,7 @@ public class AuthUserService implements UserDetailsService {
     public void createAuthUser(UserDto userDto) {
         AuthUser authUser = new AuthUser();
         authUser.setEmail(userDto.getEmail());
-        authUser.setPassword(customPasswordEncoder.encode(userDto.getPassword()));
+        authUser.setPassword(customPasswordEncoderConfig.encode(userDto.getPassword()));
         authUser.setActive(true);
         authUser.setRoles(Collections.singleton(Role.USER));
 

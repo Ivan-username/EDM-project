@@ -2,10 +2,9 @@ package com.example.lyceum.controllers;
 
 
 import com.example.lyceum.exceptions.FileDataIsEmptyException;
-import com.example.lyceum.models.dto.DocumentDto;
+import com.example.lyceum.mappers.DocumentMapper;
 import com.example.lyceum.models.enums.DocumentType;
 import com.example.lyceum.models.jpa.domain.AuthUser;
-import com.example.lyceum.services.body.DocumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Map;
 
 import static com.example.lyceum.models.enums.DocumentType.PARENT_PERSONAL_DATA;
@@ -27,7 +25,7 @@ import static com.example.lyceum.models.enums.DocumentType.STATEMENT;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    private final DocumentService documentService;
+    private final DocumentMapper documentMapper;
 
     @GetMapping("/profile")
     public String profile(Authentication authentication, Model model) {
@@ -40,22 +38,20 @@ public class ProfileController {
     public String profileUpdate(
             Authentication authentication,
             @RequestParam("statement") MultipartFile statement,
-            @RequestParam("parent_personal_data") MultipartFile parent_personal_data
+            @RequestParam("parent_personal_data") MultipartFile parent_personal_data,
+            Model model
     ) {
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
-
         Map<MultipartFile, DocumentType> multipartFiles = Map.of(
                 statement, STATEMENT,
                 parent_personal_data, PARENT_PERSONAL_DATA
         );
 
         try {
-            List<DocumentDto> documents = documentService.multipartFilesToDocuments(multipartFiles);
-
-            documents.forEach(it -> {
-                documentService.createDocument(it, authUser.getId());
-            });
+            documentMapper.map(multipartFiles, authUser);
         } catch (FileDataIsEmptyException ex) {
+            var error = "PRESS F"; // todo :)
+            model.addAttribute("", error);
             return "profile";
         }
         return "profile";
